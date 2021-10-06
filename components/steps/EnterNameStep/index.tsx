@@ -1,10 +1,11 @@
+import React from "react";
 import clsx from "clsx";
+
 import { WhiteBlock } from "../../WhiteBlock";
 import { Button } from "../../Button";
 import { StepInfo } from "../../StepInfo";
 
 import styles from "./EnterNameStep.module.scss";
-import React from "react";
 import { MainContext } from "../../../pages";
 
 export const EnterNameStep: React.FC = () => {

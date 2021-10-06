@@ -1,11 +1,12 @@
 import React from "react";
 import clsx from "clsx";
 import NumberFormat from "react-number-format";
+
+import styles from "./EnterPhoneStep.module.scss";
+
 import { WhiteBlock } from "../../WhiteBlock";
 import { Button } from "../../Button";
 import { StepInfo } from "../../StepInfo";
-
-import styles from "./EnterPhoneStep.module.scss";
 import { MainContext } from "../../../pages";
 
 type InputValueState = {
