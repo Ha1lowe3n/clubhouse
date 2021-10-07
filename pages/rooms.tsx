@@ -5,17 +5,7 @@ import { ConversationCard } from "../components/ConversationCard";
 import { Header } from "../components/Header";
 import Axios from "../core/axios";
 
-export default function RoomsPage() {
-    const [rooms, setRooms] = useState([]);
-
-    useEffect(() => {
-        (async () => {
-            const { data } = await Axios.get("/rooms.json");
-            console.log(data);
-            setRooms(data);
-        })();
-    }, []);
-
+export default function RoomsPage({ rooms }) {
     return (
         <>
             <Header />
@@ -44,3 +34,21 @@ export default function RoomsPage() {
         </>
     );
 }
+
+export const getServerSideProps = async () => {
+    try {
+        const { data } = await Axios.get("/rooms.json");
+        return {
+            props: {
+                rooms: data,
+            },
+        };
+    } catch (error) {
+        console.error("Error: " + error);
+        return {
+            props: {
+                rooms: [],
+            },
+        };
+    }
+};
