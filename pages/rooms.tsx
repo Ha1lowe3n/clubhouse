@@ -1,7 +1,9 @@
 import Link from "next/link";
+import React from "react";
 import { Button } from "../components/Button";
 import { ConversationCard } from "../components/ConversationCard";
 import { Header } from "../components/Header";
+import Axios from "../core/axios";
 
 export default function RoomsPage() {
     const guests = [
@@ -9,6 +11,13 @@ export default function RoomsPage() {
         "Ilyuha CHAOSHORSE",
         "TATSTSSSSSSSSSSSSSSSSSSSS",
     ];
+
+    React.useEffect(() => {
+        (async () => {
+            const { data } = await Axios.get("/rooms.json");
+            console.log(data);
+        })();
+    }, []);
 
     return (
         <>
