@@ -21,7 +21,7 @@ export const ConversationCard: React.FC<ConversationCard> = ({
     speakersCount,
 }) => {
     return (
-        <div className={clsx(whiteBlockStyles.block, styles.card, "mb-30")}>
+        <div className={clsx(whiteBlockStyles.block, styles.card)}>
             <h4 className={styles.title}>{title}</h4>
 
             <div className={clsx("d-flex mt-10", styles.content)}>
