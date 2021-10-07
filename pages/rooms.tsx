@@ -1,9 +1,10 @@
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React from "react";
+import Axios from "../core/axios";
+
 import { Button } from "../components/Button";
 import { ConversationCard } from "../components/ConversationCard";
 import { Header } from "../components/Header";
-import Axios from "../core/axios";
 
 export default function RoomsPage({ rooms }) {
     return (
@@ -17,7 +18,7 @@ export default function RoomsPage({ rooms }) {
 
                 <div className="grid mt-20">
                     {rooms.map((obj) => (
-                        <Link key={obj.id} href="/rooms/test-room">
+                        <Link key={obj.id} href={`/rooms/${obj.id}`}>
                             <a>
                                 <ConversationCard
                                     title={obj.title}
