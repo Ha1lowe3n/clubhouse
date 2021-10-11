@@ -6,6 +6,7 @@ dotenv.config({
 });
 
 import { passport } from "./core/passport";
+import "./core/db";
 
 const app = express();
 const PORT = process.env.PORT || 7000;
