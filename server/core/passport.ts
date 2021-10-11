@@ -1,38 +1,52 @@
 import passport from "passport";
-import { Strategy as GitHubStrategy } from "passport-github";
-
+import { Strategy as GithubStrategy } from "passport-github";
 import { User } from "../../models";
 
-console.log(User);
-
 passport.use(
-    new GitHubStrategy(
+    "github",
+    new GithubStrategy(
         {
             clientID: process.env.GITHUB_CLIENT_ID,
             clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: `http://localhost:${process.env.PORT}/auth/github/callback`,
+            callbackURL: "http://localhost:7000/auth/github/callback",
         },
-        async (accessToken, refreshToken, profile, cb) => {
-            const userData = {
-                fullname: profile.displayName,
-                avatarUrl: profile.photos?.[0].value,
-                isActive: 0,
-                username: profile.username,
-                phone: "",
-            };
-            const user = await User.create(userData);
-            console.log(userData);
-            cb();
+        async (_: unknown, __: unknown, profile, done) => {
+            try {
+                const obj = {
+                    fullname: profile.displayName,
+                    avatarUrl: profile.photos?.[0].value,
+                    isActive: 0,
+                    username: profile.username,
+                    phone: "",
+                };
+
+                const findUser = await User.findOne({
+                    where: {
+                        username: obj.username,
+                    },
+                });
+
+                if (!findUser) {
+                    const user = await User.create(obj);
+                    return done(null, user.toJSON());
+                }
+
+                done(null, findUser);
+            } catch (error) {
+                done(error);
+            }
         }
     )
 );
 
-// development: {
-//     username: process.env.DB_USER,
-//     password: process.env.DB_PASSWORD,
-//     database: process.env.DB_NAME,
-//     host: process.env.DB_HOST,
-//     dialect: "postgres",
-// },
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+    User.findById(id, function (err, user) {
+        err ? done(err) : done(null, user);
+    });
+});
 
 export { passport };

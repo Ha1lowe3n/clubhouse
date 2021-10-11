@@ -7,7 +7,7 @@ import styles from "./TwitterStep.module.scss";
 import React from "react";
 import { MainContext } from "../../../pages";
 
-export const TwitterStep: React.FC = () => {
+export const GithubStep: React.FC = () => {
     const { onNextStep } = React.useContext(MainContext);
 
     return (
@@ -33,14 +33,14 @@ export const TwitterStep: React.FC = () => {
                         />
                     </svg>
                 </div>
-                <h2 className="mb-40">Archakov Dennis</h2>
+                <h2 className="mb-40">Sasha Beliy</h2>
                 <Button onClick={onNextStep}>
                     <img
-                        src="/static/twitter.svg"
-                        alt="Twitter logo"
-                        className={styles.twitterLogo}
+                        src="/static/github.svg"
+                        alt="GitHub logo"
+                        className={styles.githubLogo}
                     />
-                    Import from Twitter
+                    Import from GitHub
                     <img className="d-ib ml-10" src="/static/arrow.svg" />
                 </Button>
                 <div className="link mt-20 cup d-ib">
