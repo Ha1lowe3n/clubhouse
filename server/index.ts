@@ -19,10 +19,13 @@ app.get(
     "/auth/github/callback",
     passport.authenticate("github", { failureRedirect: "/login" }),
     (req, res) => {
-        // Successful authentication, redirect home.
-        console.log(res);
-
-        res.send(req.user);
+        // скрипт закрывает окно аутентификации и отправляет данные юзера в localStorage
+        // 2 параметр в postMessage - URL страницы, куда мы отправляем данные
+        res.send(
+            `<script>window.opener.postMessage('${JSON.stringify(
+                req.user
+            )}', 'http://localhost:3000');window.close();</script>`
+        );
     }
 );
 

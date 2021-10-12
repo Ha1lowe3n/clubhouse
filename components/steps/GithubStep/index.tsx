@@ -4,11 +4,32 @@ import { Button } from "../../Button";
 import { StepInfo } from "../../StepInfo";
 
 import styles from "./TwitterStep.module.scss";
-import React from "react";
+import React, { useEffect } from "react";
 import { MainContext } from "../../../pages";
 
 export const GithubStep: React.FC = () => {
     const { onNextStep } = React.useContext(MainContext);
+
+    useEffect(() => {
+        window.addEventListener("message", (data) => {
+            console.log(data);
+        });
+    }, []);
+
+    const onClickAuth = () => {
+        const win = window.open(
+            "http://localhost:7000/auth/github",
+            "Auth",
+            "width=420,height=230,resizable=yes,scrollbars=no,status=yes"
+        );
+
+        const timer = setInterval(() => {
+            if (win.closed) {
+                clearInterval(timer);
+                onNextStep();
+            }
+        }, 300);
+    };
 
     return (
         <div className={styles.block}>
@@ -34,7 +55,7 @@ export const GithubStep: React.FC = () => {
                     </svg>
                 </div>
                 <h2 className="mb-40">Sasha Beliy</h2>
-                <Button onClick={onNextStep}>
+                <Button onClick={onClickAuth}>
                     <img
                         src="/static/github.svg"
                         alt="GitHub logo"
@@ -43,7 +64,7 @@ export const GithubStep: React.FC = () => {
                     Import from GitHub
                     <img className="d-ib ml-10" src="/static/arrow.svg" />
                 </Button>
-                <div className="link mt-20 cup d-ib">
+                <div onClick={onNextStep} className="link mt-20 cup d-ib">
                     Enter my info manually
                 </div>
             </WhiteBlock>

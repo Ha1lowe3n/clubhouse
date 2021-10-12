@@ -39,6 +39,7 @@ passport.use(
     )
 );
 
+// !! Нужно найти информацию по этому куску кода
 passport.serializeUser(function (user, done) {
     done(null, user.id);
 });
@@ -48,5 +49,6 @@ passport.deserializeUser(function (id, done) {
         err ? done(err) : done(null, user);
     });
 });
+// !! Нужно найти информацию по этому куску кода
 
 export { passport };
