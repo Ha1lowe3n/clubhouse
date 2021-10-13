@@ -1,33 +1,60 @@
-import React from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import clsx from "clsx";
+import { Axios } from "../../../core/axios";
+
+import styles from "./ChooseAvatarStep.module.scss";
+
 import { WhiteBlock } from "../../WhiteBlock";
 import { Button } from "../../Button";
 import { StepInfo } from "../../StepInfo";
 import { Avatar } from "../../Avatar";
-
-import styles from "./ChooseAvatarStep.module.scss";
 import { MainContext } from "../../../pages";
 
+type uploadFileType = {
+    url: string;
+};
+
+const uploadFile = async (file: File): Promise<uploadFileType> => {
+    const formData = new FormData();
+    formData.append("photo", file);
+
+    const { data }: { data: uploadFileType } = await Axios.post(
+        "/upload",
+        formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+        }
+    );
+
+    return data;
+};
+
 export const ChooseAvatarStep: React.FC = () => {
-    const { onNextStep } = React.useContext(MainContext);
-    const [avatarUrl, setAvatarUrl] = React.useState<string>(
+    const { onNextStep } = useContext(MainContext);
+    const [avatarUrl, setAvatarUrl] = useState<string>(
         "https://sun2-3.userapi.com/s/v1/if1/CAR1Aao3yIica7xq77xIIMMTn29CME-cE5JSJBc8OTNVt29JQjnhR0ZsX_9IO-AzgwVbfgB6.jpg?size=200x0&quality=96&crop=138,44,1048,1048&ava=1"
     );
-    const inputFileRef = React.useRef<HTMLInputElement>(null);
 
-    const handleChangeImage = (event: Event): void => {
-        const file = (event.target as HTMLInputElement).files[0];
-        if (file) {
-            const imageUrl = URL.createObjectURL(file);
-            setAvatarUrl(imageUrl);
-        }
-    };
+    const inputFileRef = useRef<HTMLInputElement>(null);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (inputFileRef.current) {
             inputFileRef.current.addEventListener("change", handleChangeImage);
         }
     }, []);
+
+    const handleChangeImage = async (event: Event): Promise<void> => {
+        const file = (event.target as HTMLInputElement).files[0];
+
+        if (file) {
+            const imageUrl = URL.createObjectURL(file);
+            setAvatarUrl(imageUrl);
+            const data = await uploadFile(file);
+            setAvatarUrl(data.url);
+        }
+    };
 
     return (
         <div className={styles.block}>

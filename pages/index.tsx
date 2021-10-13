@@ -38,7 +38,7 @@ export const MainContext = React.createContext<MainContextProps>(
 );
 
 export default function Home() {
-    const [step, setStep] = useState<number>(0);
+    const [step, setStep] = useState<number>(3);
     const [userData, setUserData] = useState<UserDataType>();
     const Step = stepsComponents[step];
 

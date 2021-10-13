@@ -1,5 +1,5 @@
 import React from "react";
-import Axios from "../../core/axios";
+import { Axios } from "../../core/axios";
 
 import { BackButton } from "../../components/BackButton";
 import { Header } from "../../components/Header";

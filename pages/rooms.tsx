@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-import Axios from "../core/axios";
+import { Axios } from "../core/axios";
 
 import { Button } from "../components/Button";
 import { ConversationCard } from "../components/ConversationCard";
