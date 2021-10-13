@@ -30,8 +30,16 @@
     position: relative;
     top: 1px;
     margin-right: 6px;
-    width: 20px;
-    height: 18px;
+    width: 25px;
+    height: 25px;
+}
+
+.button {
+    background-color: #24292e;
+
+    &:hover {
+        background-color: lighten(#24292e, 5);
+    }
 }
 
 .title {

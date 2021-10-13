@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import clsx from "clsx";
 
 import { WhiteBlock } from "../../WhiteBlock";
@@ -9,8 +9,11 @@ import styles from "./EnterNameStep.module.scss";
 import { MainContext } from "../../../pages";
 
 export const EnterNameStep: React.FC = () => {
-    const [inputValue, setInputValue] = React.useState<string>("");
-    const { onNextStep } = React.useContext(MainContext);
+    const { onNextStep, userData, setFieldValue } = useContext(MainContext);
+
+    const [inputValue, setInputValue] = useState<string>(
+        userData ? userData.fullname : ""
+    );
 
     const nextDisabled = !inputValue;
 
@@ -19,6 +22,7 @@ export const EnterNameStep: React.FC = () => {
     };
 
     const onClickNextStep = () => {
+        setFieldValue("fullname", inputValue);
         onNextStep();
     };
 

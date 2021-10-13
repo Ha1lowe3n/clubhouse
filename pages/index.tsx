@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { WelcomeStep } from "../components/steps/WelcomeStep";
 import { EnterNameStep } from "../components/steps/EnterNameStep";
@@ -16,9 +16,21 @@ const stepsComponents = {
     5: EnterCodeStep,
 };
 
+export type UserDataType = {
+    id: number;
+    fullname: string;
+    avatarUrl: string;
+    isActive: number;
+    username: string;
+    phone: string;
+};
+
 type MainContextProps = {
-    onNextStep: () => void;
     step: number;
+    userData: UserDataType;
+    onNextStep: () => void;
+    setFieldValue: (field: keyof UserDataType, value: string) => void;
+    setUserData: React.Dispatch<React.SetStateAction<UserDataType>>;
 };
 
 export const MainContext = React.createContext<MainContextProps>(
@@ -26,15 +38,29 @@ export const MainContext = React.createContext<MainContextProps>(
 );
 
 export default function Home() {
-    const [step, setStep] = React.useState<number>(0);
+    const [step, setStep] = useState<number>(0);
+    const [userData, setUserData] = useState<UserDataType>();
     const Step = stepsComponents[step];
 
     const onNextStep = () => {
         setStep((prev) => prev + 1);
     };
 
+    // меняем конкретное свойство в userData
+    // в steps мы можем поменять данные, которые мы получили от GitHub
+    const setFieldValue = (field: keyof UserDataType, value: string) => {
+        setUserData((prev) => ({
+            ...prev,
+            [field]: value,
+        }));
+    };
+
+    console.log(userData);
+
     return (
-        <MainContext.Provider value={{ step, onNextStep }}>
+        <MainContext.Provider
+            value={{ step, onNextStep, userData, setUserData, setFieldValue }}
+        >
             <Step />
         </MainContext.Provider>
     );

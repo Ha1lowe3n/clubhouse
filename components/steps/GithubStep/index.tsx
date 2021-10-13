@@ -3,39 +3,40 @@ import { WhiteBlock } from "../../WhiteBlock";
 import { Button } from "../../Button";
 import { StepInfo } from "../../StepInfo";
 
-import styles from "./TwitterStep.module.scss";
+import styles from "./GithubStep.module.scss";
 import React, { useEffect } from "react";
-import { MainContext } from "../../../pages";
+import { MainContext, UserDataType } from "../../../pages";
 
 export const GithubStep: React.FC = () => {
-    const { onNextStep } = React.useContext(MainContext);
+    const { onNextStep, setUserData } = React.useContext(MainContext);
 
     useEffect(() => {
-        window.addEventListener("message", (data) => {
-            console.log(data);
+        window.addEventListener("message", ({ data, origin }) => {
+            if (
+                origin === "http://localhost:7000" &&
+                typeof data === "string" &&
+                data.includes("avatarUrl")
+            ) {
+                const user: UserDataType = JSON.parse(data);
+                setUserData(user);
+                onNextStep();
+            }
         });
     }, []);
 
     const onClickAuth = () => {
-        const win = window.open(
+        window.open(
             "http://localhost:7000/auth/github",
             "Auth",
             "width=420,height=230,resizable=yes,scrollbars=no,status=yes"
         );
-
-        const timer = setInterval(() => {
-            if (win.closed) {
-                clearInterval(timer);
-                onNextStep();
-            }
-        }, 300);
     };
 
     return (
         <div className={styles.block}>
             <StepInfo
                 icon="/static/connect.png"
-                title="Do you want import info from Twitter?"
+                title="Do you want import info from GitHub?"
             />
             <WhiteBlock className={clsx("m-auto mt-40", styles.whiteBlock)}>
                 <div className={styles.avatar}>
@@ -55,7 +56,13 @@ export const GithubStep: React.FC = () => {
                     </svg>
                 </div>
                 <h2 className="mb-40">Sasha Beliy</h2>
-                <Button onClick={onClickAuth}>
+                <Button
+                    onClick={onClickAuth}
+                    className={clsx(
+                        styles.button,
+                        "d-i-flex align-items-center"
+                    )}
+                >
                     <img
                         src="/static/github.svg"
                         alt="GitHub logo"
